@@ -1,0 +1,23 @@
+version: '3' 
+
+services: 
+
+    frontend:  
+      image: frontti 
+      build: ./frontend-example-docker
+      ports: 
+        - 5000:5000
+
+    backend:  
+      image: bakki
+      build: ./backend-example-docker
+      links: 
+       - cache
+      environment:  
+        - REDIS=cache
+      ports: 
+        - 8000:8000 
+    
+    cache:
+      image: redis
+      

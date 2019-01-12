@@ -1,0 +1,40 @@
+version: '3' 
+
+services: 
+
+    frontend:  
+      image: frontti 
+      build: ./frontend-example-docker
+      ports: 
+        - 5000:5000
+
+    backend:  
+      image: bakki
+      build: ./backend-example-docker
+      links: 
+       - cache
+      environment:  
+        - REDIS=cache
+        - DB_USERNAME=jippii
+        - DB_PASSWORD=jippii
+        - DB_NAME=kantakanta
+        - DB_HOST=kanta
+      ports: 
+        - 8000:8000 
+    
+    cache:
+      image: redis
+
+    kanta:
+      image: postgres
+      environment:
+        - POSTGRES_USER=jippii
+        - POSTGRES_PASSWORD=jippii
+        - POSTGRES_DB=kantakanta
+
+    engee:
+      image: nginx
+      ports:
+        - 80:80 
+      volumes: 
+        - ./nginx.conf:/etc/nginx/nginx.conf
